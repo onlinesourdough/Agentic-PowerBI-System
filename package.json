@@ -1,0 +1,34 @@
+{
+  "name": "agentic-powerbi",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Harness-agnostic Agent Skills, Pi package, prompts, and guardrails for agentic Power BI / Business Analytics development.",
+  "keywords": [
+    "pi-package",
+    "agent-skills",
+    "power-bi",
+    "pbip",
+    "pbir",
+    "tmdl",
+    "fabric",
+    "business-analytics"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gustavonline/agentic-powerbi.git"
+  },
+  "pi": {
+    "extensions": ["extensions"],
+    "skills": ["skills"],
+    "prompts": ["prompts"]
+  },
+  "scripts": {
+    "doctor": "node scripts/doctor.mjs",
+    "validate": "node scripts/validate-pbip.mjs .",
+    "init-project": "node scripts/init-project.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
