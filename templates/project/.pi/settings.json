@@ -1,6 +1,0 @@
-{
-  "enableSkillCommands": true,
-  "packages": [
-    "git:github.com/gustavonline/agentic-powerbi"
-  ]
-}

@@ -1,150 +1,123 @@
 # agentic-powerbi
 
-Harness-agnostic Agent Skills, Pi package, prompt templates, and guardrails for **Power BI / Business Analytics development as code**.
+Clean, project-local skills and guardrails for **agentic Power BI development**.
 
-The goal is simple: clone or install this repo into a Power BI project and give your coding agent a project-local way to work with PBIP, PBIR, TMDL, DAX, Power Query, Fabric, and report validation — without installing global Claude-style plugins.
+This repo is meant to be installed into a Power BI / Business Analytics project so your coding agent understands PBIP, PBIR, TMDL, DAX, Fabric, validation, and report/model workflows without global setup.
 
-## Why this exists
+## Quick start
 
-Power BI development is becoming source-controlled and file-based:
-
-- **PBIP**: project container
-- **TMDL**: semantic model as text
-- **PBIR**: report definition as text
-- **Fabric CLI / pbir / pbi-tools / Tabular Editor**: deterministic tools agents can call
-
-Agents are useful here, but only if they are given:
-
-1. domain-specific instructions,
-2. deterministic validation,
-3. project-local setup,
-4. safe workflows for brittle report/model files.
-
-This repo packages that into a reusable, lightweight starter.
-
-## Design philosophy
-
-- **Project-local, not global**: install into each repo via `.pi/settings.json`.
-- **Skills over subagents**: every capability is a normal Agent Skill. No Claude-only agent runtime required.
-- **Progressive disclosure**: keep `AGENTS.md` concise; detailed docs live under `.agent/docs/` and skills.
-- **Deterministic first**: prefer `pbir validate`, `fab`, `pbi-tools`, `Tabular Editor`, scripts, and JSON/TMDL checks before manual LLM reasoning.
-- **Harness-agnostic**: Pi-first package, but usable from Codex, Claude, Copilot, Cursor, and other coding harnesses that can read Agent Skills / `AGENTS.md`.
-
-## Quick start with Pi
-
-Install this package project-locally inside an existing Power BI repo:
+From your Power BI project:
 
 ```bash
-cd path/to/your-powerbi-project
 pi install -l git:github.com/gustavonline/agentic-powerbi
-```
-
-Then start Pi from that project:
-
-```bash
 pi
 ```
 
-The install writes to `.pi/settings.json`, so the package is active only for that project.
+That adds this package to `.pi/settings.json` for the current project only.
 
-### Local development install
+## What you get
 
-If you cloned this repo next to your Power BI project:
-
-```bash
-cd path/to/your-powerbi-project
-pi install -l ../agentic-powerbi
+```text
+agentic-powerbi/
+├── skills/       # Agent Skills for Power BI work
+├── prompts/      # Short slash-command prompt templates
+├── extensions/   # Pi guardrails and helper commands
+├── scripts/      # Small validation/tooling scripts
+├── AGENTS.md     # Optional root instruction file
+└── package.json  # Pi package manifest
 ```
 
-## Use as a starter template
+## Skills
+
+| Skill | Use for |
+|---|---|
+| `powerbi` | Business analytics workflow, KPI thinking, report storytelling |
+| `pbip` | PBIP/PBIR/TMDL file structure and safe project edits |
+| `dax` | DAX measures, KPI definitions, validation ideas |
+| `report` | PBIR report pages, visuals, themes, layout, filters |
+| `fabric` | Fabric CLI / Power BI Service workflows |
+| `validation` | PBIP/PBIR/TMDL checks before saying a task is done |
+
+## Prompt templates
+
+- `/validate-powerbi [path]`
+- `/audit-powerbi [focus]`
+- `/plan-powerbi-page <business question>`
+
+## Pi extension
+
+The package includes `extensions/index.ts`, a small Pi extension that adds:
+
+- `/powerbi-doctor` — check recommended local Power BI tooling
+- `/powerbi-validate [path]` — run local PBIP/PBIR/TMDL validation
+- automatic validation warning after editing `.pbir`, `.tmdl`, and report JSON files
+
+## Recommended toolchain
+
+Install only what your project needs:
+
+| Tool | Why |
+|---|---|
+| Power BI Desktop | Open and author PBIP/PBIX locally |
+| `pbir` CLI | Browse, edit, back up, and validate PBIR reports |
+| `fab` / Fabric CLI | Workspaces, reports, semantic models, import/export, refresh |
+| `pbi-tools` | PBIX/PBIT source-control workflows and diagnostics |
+| Tabular Editor | Semantic model scripting, BPA, model validation |
+| DAX Studio | DAX query and performance analysis |
+
+Useful install commands:
 
 ```bash
-git clone https://github.com/gustavonline/agentic-powerbi.git
-mkdir my-powerbi-analytics
-cd my-powerbi-analytics
-node ../agentic-powerbi/scripts/init-project.mjs . --source ../agentic-powerbi
+pip install ms-fabric-cli
+pip install pbir-cli
+npm install -g @mariozechner/pi-coding-agent
 ```
 
-This creates:
+For `pbi-tools`, download from https://pbi.tools/cli/.
 
-- `.pi/settings.json` with a project-local package reference
-- `AGENTS.md` for harnesses that read root instructions
-- `.agent/` progressive-disclosure docs and task template
-- `.gitignore` tuned for PBIP projects
-
-## Recommended Power BI toolchain
-
-Install what you need; the skills will prefer deterministic tools when present and fall back gracefully when absent.
-
-| Tool | Why use it | Install / check |
-|---|---|---|
-| **Power BI Desktop** | Author/open PBIP/PBIX locally | Windows app |
-| **Pi Coding Agent** | Primary local harness for this package | `npm install -g @mariozechner/pi-coding-agent` |
-| **Fabric CLI (`fab`)** | Workspaces, items, import/export, Fabric automation | `pip install ms-fabric-cli` then `fab auth login` |
-| **pbir CLI** | Browse/edit/validate PBIR reports | `uv tool install pbir-cli` or `pip install pbir-cli` |
-| **pbi-tools** | PBIX/PBIT source-control workflows and diagnostics | download from pbi.tools releases |
-| **Tabular Editor 2/3** | Semantic model scripting, BPA, validation | install TE and add CLI to PATH |
-| **DAX Studio** | Query/performance diagnosis | install desktop tool |
-| **Git + Node 20+** | Source control and local scripts | `git --version`, `node --version` |
-
-Run a quick local check:
+Check your setup:
 
 ```bash
-node scripts/doctor.mjs
+node .pi/git/github.com/gustavonline/agentic-powerbi/scripts/doctor.mjs
 ```
 
-See also: [`docs/comparison.md`](docs/comparison.md) for how this differs from Claude-style plugin marketplaces.
+or from this repo:
 
-## Included package resources
+```bash
+npm run doctor
+```
 
-### Skills
+## Recommended project setup
 
-- `toolchain-setup` — install/check Power BI CLI tooling
-- `powerbi-business-analytics` — translate business questions into analytical Power BI work
-- `pbip-workflow` — PBIP/TMDL/PBIR project structure and safe file workflows
-- `semantic-modeling` — star schema, relationships, model quality
-- `dax-measures` — DAX authoring and validation workflow
-- `power-query` — M/query shaping and refresh guidance
-- `pbir-report-editing` — PBIR report edits, pages, visuals, themes
-- `powerbi-validation` — deterministic validation and post-rename checks
-- `fabric-deployment` — Fabric CLI deployment/refresh/workspace workflow
-- `agentic-powerbi-reviewer` — end-to-end model/report review checklist
+In your actual Power BI repo, keep it simple:
 
-### Prompt templates
+```text
+your-powerbi-project/
+├── .pi/settings.json
+├── AGENTS.md                 # optional, copy/adapt from this repo
+├── YourReport.pbip
+├── YourReport.Report/
+└── YourReport.SemanticModel/
+```
 
-- `/validate-pbip`
-- `/audit-powerbi`
-- `/plan-report-page`
-- `/create-measures`
-- `/prepare-business-case`
+Suggested `.gitignore` lines:
 
-### Pi extension
+```gitignore
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+*.pbix
+.pi/*
+!.pi/settings.json
+```
 
-`extensions/powerbi-guard.ts` adds project-local guardrails:
+## Why project-local?
 
-- validates edited PBIR JSON / `definition.pbir` / TMDL-ish files after `write` and `edit`
-- provides `/powerbi-doctor`
-- provides `/powerbi-validate [path]`
+Power BI projects differ by tenant, workspace, model conventions, data sources, and business language. Project-local packages avoid leaking assumptions between projects.
 
-## Repository modes
+## Notes on TypeScript vs scripts
 
-You can use this repo in two ways:
+The Pi extension is TypeScript because Pi loads extensions directly with its TypeScript runtime. The tiny files in `scripts/` are plain Node `.mjs` so they run anywhere without a build step or extra dependencies. That keeps setup simple.
 
-1. **As a Pi package** installed into another project.
-2. **As a project starter** by running `scripts/init-project.mjs`.
+## License
 
-Both modes are project-based and avoid global agent state.
-
-## Attribution
-
-This repo is original MIT-licensed work, but it is inspired by the broader agentic Power BI community and Microsoft’s PBIP/TMDL/PBIR direction. It does **not** vendor third-party skills or Claude plugin assets. See `docs/attribution.md`.
-
-## Safety notes
-
-PBIR and TMDL are text, but they are still brittle. Recommended habits:
-
-- Make a backup before large report edits.
-- Prefer `pbir` CLI for report mutations when available.
-- Run validation after every structural change.
-- Open Power BI Desktop only after local validation is clean.
-- Keep `.pbi/cache.abf` and local settings out of Git.
+MIT. Inspired by the Power BI agentic development ecosystem, but this repo is intentionally small and original rather than a repackaged Claude plugin marketplace.
