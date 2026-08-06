@@ -1,30 +1,51 @@
-# Agentic Power BI
+# PowerBI-template
 
-Use this guidance when working in a Power BI / Business Analytics repo.
+Turn a business question into an owned, validated Power BI model and report.
 
-## Core rules
+## Start
 
-1. Treat PBIP/PBIR/TMDL as source code, but validate after edits.
-2. Prefer deterministic tools before guessing:
-   - `pbir validate` for reports
-   - `fab` for Fabric / Power BI Service
-   - `pbi-tools` for PBIX/PBIT workflows
-   - Tabular Editor / DAX Studio for model and DAX work
-3. Ask before deleting visuals/pages, rebinding reports, publishing, overwriting service items, or changing `.platform` IDs.
-4. Keep business definitions clear: KPI name, DAX, format, interpretation, limitation.
-5. Always finish with changed files + validation result + remaining risks.
+1. Read `PROJECT-BRIEF.md` and preserve resolved AIOS or project context.
+2. Name the decision, audience, KPI definitions, data owners, refresh/runtime,
+   proof, and optional Design-template handoff.
+3. Model first: use a star schema, explicit relationships, hidden technical
+   keys, and explicit measures.
+4. Report second: one page per business question, with the decision and its
+   evidence ahead of decoration.
+5. Validate every PBIP/PBIR/TMDL edit.
 
-## Power BI workflow
+## Routes
 
-- Model first: star schema, relationships, hidden technical keys, explicit measures.
-- Report second: one page per business question, clear KPI row, explanation, detail.
-- Validate always: JSON, PBIR structure, report binding, TMDL warnings, field references.
+- `skills/powerbi/SKILL.md`: business analytics and decision framing
+- `skills/pbip/SKILL.md`: PBIP/PBIR/TMDL structure
+- `skills/dax/SKILL.md`: measures and semantic logic
+- `skills/report/SKILL.md`: report composition, states, and filters
+- `skills/fabric/SKILL.md`: service and Fabric work
+- `skills/validation/SKILL.md`: completion proof
 
-## Useful commands
+Pi is optional. Use `scripts/doctor.mjs` and `scripts/validate-pbip.mjs`
+directly in any harness.
 
-```bash
+## Rules
+
+- Keep KPI name, DAX, format, interpretation, limitation, and business owner
+  together.
+- Use deterministic validation before visual inspection or guesses.
+- Preserve data ownership, row-level security, refresh, and workspace
+  boundaries.
+- Keep secrets, tenant identifiers, private data, and generated local Power BI
+  state out of Git.
+- Ask before deleting pages or visuals, rebinding, publishing, overwriting
+  service items, changing `.platform` IDs, or changing access/refresh policy.
+- Finish with changed files, validation evidence, unavailable checks, and
+  remaining risk.
+
+## Proof
+
+```sh
 node scripts/doctor.mjs
-node scripts/validate-pbip.mjs .
-pbir validate "Report.Report" --all
-fab auth status
+node scripts/validate-pbip.mjs . --ignore-tests
+npm test
 ```
+
+Use `pbir validate`, Fabric CLI, Tabular Editor, DAX Studio, Power BI Desktop,
+or `pbi-tools` only when the project and available environment justify them.

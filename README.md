@@ -1,123 +1,77 @@
-# agentic-powerbi
+![PowerBI-template workflow](assets/powerbi-template-overview.svg)
 
-Clean, project-local skills and guardrails for **agentic Power BI development**.
+# PowerBI-template
 
-This repo is meant to be installed into a Power BI / Business Analytics project so your coding agent understands PBIP, PBIR, TMDL, DAX, Fabric, validation, and report/model workflows without global setup.
-
-## Quick start
-
-From your Power BI project:
-
-```bash
-pi install -l git:github.com/gustavonline/agentic-powerbi
-pi
-```
-
-That adds this package to `.pi/settings.json` for the current project only.
-
-## What you get
+A private foundation for turning a business question into an owned Power BI
+model, report, and decision workflow.
 
 ```text
-agentic-powerbi/
-├── skills/       # Agent Skills for Power BI work
-├── prompts/      # Short slash-command prompt templates
-├── extensions/   # Pi guardrails and helper commands
-├── scripts/      # Small validation/tooling scripts
-├── AGENTS.md     # Optional root instruction file
-└── package.json  # Pi package manifest
+business question → definitions and data → model → report → decision → proof
 ```
 
-## Skills
+Start from AIOS context, a standalone brief, or an approved Design-template
+handoff. This repository owns the Power BI solution after the handoff.
 
-| Skill | Use for |
-|---|---|
-| `powerbi` | Business analytics workflow, KPI thinking, report storytelling |
-| `pbip` | PBIP/PBIR/TMDL file structure and safe project edits |
-| `dax` | DAX measures, KPI definitions, validation ideas |
-| `report` | PBIR report pages, visuals, themes, layout, filters |
-| `fabric` | Fabric CLI / Power BI Service workflows |
-| `validation` | PBIP/PBIR/TMDL checks before saying a task is done |
+## Start
 
-## Prompt templates
+1. Complete [PROJECT-BRIEF.md](PROJECT-BRIEF.md).
+2. Keep business definitions next to their measure, format, interpretation, and
+   limitation.
+3. Build the model before the report.
+4. Make each report page answer one named business question.
+5. Validate before opening, publishing, or claiming completion.
 
-- `/validate-powerbi [path]`
-- `/audit-powerbi [focus]`
-- `/plan-powerbi-page <business question>`
-
-## Pi extension
-
-The package includes `extensions/index.ts`, a small Pi extension that adds:
-
-- `/powerbi-doctor` — check recommended local Power BI tooling
-- `/powerbi-validate [path]` — run local PBIP/PBIR/TMDL validation
-- automatic validation warning after editing `.pbir`, `.tmdl`, and report JSON files
-
-## Recommended toolchain
-
-Install only what your project needs:
-
-| Tool | Why |
-|---|---|
-| Power BI Desktop | Open and author PBIP/PBIX locally |
-| `pbir` CLI | Browse, edit, back up, and validate PBIR reports |
-| `fab` / Fabric CLI | Workspaces, reports, semantic models, import/export, refresh |
-| `pbi-tools` | PBIX/PBIT source-control workflows and diagnostics |
-| Tabular Editor | Semantic model scripting, BPA, model validation |
-| DAX Studio | DAX query and performance analysis |
-
-Useful install commands:
-
-```bash
-pip install ms-fabric-cli
-pip install pbir-cli
-npm install -g @mariozechner/pi-coding-agent
-```
-
-For `pbi-tools`, download from https://pbi.tools/cli/.
-
-Check your setup:
-
-```bash
-node .pi/git/github.com/gustavonline/agentic-powerbi/scripts/doctor.mjs
-```
-
-or from this repo:
-
-```bash
+```sh
 npm run doctor
+npm run validate
+npm test
 ```
 
-## Recommended project setup
+## What is included
 
-In your actual Power BI repo, keep it simple:
+- Project-local skills for Power BI, PBIP/PBIR/TMDL, DAX, reports, Fabric, and
+  validation.
+- Short prompts for audit, page planning, and validation.
+- A dependency-free PBIP/PBIR/TMDL validator and valid/invalid fixtures.
+- An optional Pi extension that exposes doctor and validation commands.
 
-```text
-your-powerbi-project/
-├── .pi/settings.json
-├── AGENTS.md                 # optional, copy/adapt from this repo
-├── YourReport.pbip
-├── YourReport.Report/
-└── YourReport.SemanticModel/
+Pi is an adapter, not the primary interface. Any coding-agent harness can use
+the repository instructions, skills, prompts, and Node scripts directly.
+
+## Workflow
+
+| Need | Route |
+| --- | --- |
+| Business question, KPI, and decision | `skills/powerbi/SKILL.md` |
+| PBIP/PBIR/TMDL structure and safe edits | `skills/pbip/SKILL.md` |
+| Measures and semantic logic | `skills/dax/SKILL.md` |
+| Report pages, visuals, layout, and filters | `skills/report/SKILL.md` |
+| Fabric or Power BI Service work | `skills/fabric/SKILL.md` |
+| Completion proof | `skills/validation/SKILL.md` |
+
+An approved Design-template handoff can supply `DESIGN.md`, report composition,
+tokens, and preview intent. Revalidate it against actual Power BI capabilities,
+data, accessibility, and tenant constraints; Design-template is not a runtime
+dependency.
+
+## Optional Pi adapter
+
+When Pi is useful, install the package project-locally:
+
+```sh
+pi install -l git:github.com/onlinesourdough/PowerBI-template
 ```
 
-Suggested `.gitignore` lines:
+It provides `/powerbi-doctor`, `/powerbi-validate`, prompt templates, and edit
+warnings. Without Pi, use the same scripts directly.
 
-```gitignore
-**/.pbi/localSettings.json
-**/.pbi/cache.abf
-*.pbix
-.pi/*
-!.pi/settings.json
-```
+## Safety
 
-## Why project-local?
-
-Power BI projects differ by tenant, workspace, model conventions, data sources, and business language. Project-local packages avoid leaking assumptions between projects.
-
-## Notes on TypeScript vs scripts
-
-The Pi extension is TypeScript because Pi loads extensions directly with its TypeScript runtime. The tiny files in `scripts/` are plain Node `.mjs` so they run anywhere without a build step or extra dependencies. That keeps setup simple.
+Ask before deleting pages or visuals, rebinding reports, changing `.platform`
+IDs, publishing, overwriting service items, or changing refresh and access
+policy. Keep tenant IDs, credentials, connection strings, and private data out
+of Git and fixtures.
 
 ## License
 
-MIT. Inspired by the Power BI agentic development ecosystem, but this repo is intentionally small and original rather than a repackaged Claude plugin marketplace.
+MIT.

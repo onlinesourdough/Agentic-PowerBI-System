@@ -4,9 +4,15 @@ import path from "node:path";
 
 const NAME_RE = /^[A-Za-z0-9_][A-Za-z0-9_-]*$/;
 const args = process.argv.slice(2);
+const ignoreTests = args.includes("--ignore-tests");
 const changedIndex = args.indexOf("--changed");
 const changedPath = changedIndex >= 0 ? args[changedIndex + 1] : undefined;
-const targetArg = args.find((a, i) => i !== changedIndex && i !== changedIndex + 1 && !a.startsWith("--")) || ".";
+const targetArg =
+  args.find(
+    (argument, index) =>
+      !argument.startsWith("--") &&
+      (changedIndex < 0 || (index !== changedIndex && index !== changedIndex + 1)),
+  ) || ".";
 const root = path.resolve(process.cwd(), targetArg);
 
 const findings = [];
@@ -29,6 +35,7 @@ function walk(dir, predicate, out = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
     if (entry.name === ".git" || entry.name === "node_modules" || entry.name === ".pi") continue;
+    if (ignoreTests && entry.name === "tests") continue;
     if (entry.isDirectory()) walk(full, predicate, out);
     else if (predicate(full)) out.push(full);
   }
@@ -43,6 +50,7 @@ function findDirs(start, suffix) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       if (!entry.isDirectory()) continue;
       if ([".git", "node_modules", ".pi"].includes(entry.name)) continue;
+      if (ignoreTests && entry.name === "tests") continue;
       visit(path.join(dir, entry.name));
     }
   }

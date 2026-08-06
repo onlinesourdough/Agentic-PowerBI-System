@@ -11,7 +11,7 @@ const checks = [
   { cmd: "pbi-tools.core", args: ["--version"], label: "pbi-tools core", required: false },
   { cmd: "te", args: ["--version"], label: "Tabular Editor CLI", required: false },
   { cmd: "dotnet", args: ["--version"], label: ".NET SDK/runtime", required: false },
-  { cmd: "python", args: ["--version"], label: "Python", required: false },
+  { cmd: "python3", args: ["--version"], label: "Python", required: false },
   { cmd: "uv", args: ["--version"], label: "uv", required: false },
 ];
 
@@ -24,7 +24,7 @@ function run(cmd, args) {
 }
 
 let requiredMissing = 0;
-console.log("Agentic Power BI toolchain check\n");
+console.log("PowerBI-template toolchain check\n");
 for (const check of checks) {
   const result = run(check.cmd, check.args);
   const icon = result.ok ? "✓" : check.required ? "✗" : "-";
@@ -35,7 +35,7 @@ for (const check of checks) {
 console.log("\nRecommended installs:");
 console.log("- Fabric CLI:  pip install ms-fabric-cli");
 console.log("- pbir CLI:    uv tool install pbir-cli   (or: pip install pbir-cli)");
-console.log("- Pi:          npm install -g @mariozechner/pi-coding-agent");
+console.log("- Pi (optional): npm install -g @mariozechner/pi-coding-agent");
 console.log("- pbi-tools:   download from https://pbi.tools/cli/");
 console.log("- Tabular Editor / DAX Studio: install desktop tools on Windows");
 

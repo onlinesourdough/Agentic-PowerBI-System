@@ -16,7 +16,7 @@ export default function (pi: ExtensionAPI) {
   const validateScript = path.join(root(), "scripts", "validate-pbip.mjs");
 
   pi.registerCommand("powerbi-doctor", {
-    description: "Check local Power BI agentic tooling",
+    description: "Check optional local Power BI tooling",
     handler: async (_args, ctx) => {
       const result = await pi.exec("node", [doctorScript], { timeout: 30_000 });
       const output = `${result.stdout || ""}${result.stderr || ""}`.trim() || "No output";

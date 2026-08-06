@@ -1,7 +1,7 @@
 {
-  "name": "agentic-powerbi",
+  "name": "powerbi-template",
   "version": "0.2.0",
-  "description": "Clean project-local skills, prompts, and guardrails for agentic Power BI development.",
+  "description": "Project-local context, skills, and validation for owned Power BI solutions.",
   "keywords": [
     "pi-package",
     "agent-skills",
@@ -15,7 +15,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gustavonline/agentic-powerbi.git"
+    "url": "https://github.com/onlinesourdough/PowerBI-template.git"
   },
   "pi": {
     "extensions": ["extensions/index.ts"],
@@ -24,7 +24,8 @@
   },
   "scripts": {
     "doctor": "node scripts/doctor.mjs",
-    "validate": "node scripts/validate-pbip.mjs ."
+    "validate": "node scripts/validate-pbip.mjs . --ignore-tests",
+    "test": "node tests/test-validator.mjs"
   },
   "engines": {
     "node": ">=20"
