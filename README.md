@@ -14,7 +14,7 @@ handoff. This repository owns the Power BI solution after the handoff.
 
 ## Start
 
-1. Complete [PROJECT-BRIEF.md](PROJECT-BRIEF.md).
+1. Complete [workspace/PROJECT-BRIEF.md](workspace/PROJECT-BRIEF.md).
 2. Keep business definitions next to their measure, format, interpretation, and
    limitation.
 3. Build the model before the report.
@@ -42,12 +42,12 @@ the repository instructions, skills, prompts, and Node scripts directly.
 
 | Need | Route |
 | --- | --- |
-| Business question, KPI, and decision | `skills/powerbi/SKILL.md` |
-| PBIP/PBIR/TMDL structure and safe edits | `skills/pbip/SKILL.md` |
-| Measures and semantic logic | `skills/dax/SKILL.md` |
-| Report pages, visuals, layout, and filters | `skills/report/SKILL.md` |
-| Fabric or Power BI Service work | `skills/fabric/SKILL.md` |
-| Completion proof | `skills/validation/SKILL.md` |
+| Business question, KPI, and decision | `.agents/skills/powerbi/SKILL.md` |
+| PBIP/PBIR/TMDL structure and safe edits | `.agents/skills/pbip/SKILL.md` |
+| Measures and semantic logic | `.agents/skills/dax/SKILL.md` |
+| Report pages, visuals, layout, and filters | `.agents/skills/report/SKILL.md` |
+| Fabric or Power BI Service work | `.agents/skills/fabric/SKILL.md` |
+| Completion proof | `.agents/skills/validation/SKILL.md` |
 
 An approved Design-template handoff can supply `DESIGN.md`, report composition,
 tokens, and preview intent. Revalidate it against actual Power BI capabilities,

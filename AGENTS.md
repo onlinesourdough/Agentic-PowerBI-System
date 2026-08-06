@@ -4,7 +4,7 @@ Turn a business question into an owned, validated Power BI model and report.
 
 ## Start
 
-1. Read `PROJECT-BRIEF.md` and preserve resolved AIOS or project context.
+1. Read `workspace/PROJECT-BRIEF.md` and preserve resolved AIOS or project context.
 2. Name the decision, audience, KPI definitions, data owners, refresh/runtime,
    proof, and optional Design-template handoff.
 3. Model first: use a star schema, explicit relationships, hidden technical
@@ -15,12 +15,12 @@ Turn a business question into an owned, validated Power BI model and report.
 
 ## Routes
 
-- `skills/powerbi/SKILL.md`: business analytics and decision framing
-- `skills/pbip/SKILL.md`: PBIP/PBIR/TMDL structure
-- `skills/dax/SKILL.md`: measures and semantic logic
-- `skills/report/SKILL.md`: report composition, states, and filters
-- `skills/fabric/SKILL.md`: service and Fabric work
-- `skills/validation/SKILL.md`: completion proof
+- `.agents/skills/powerbi/SKILL.md`: business analytics and decision framing
+- `.agents/skills/pbip/SKILL.md`: PBIP/PBIR/TMDL structure
+- `.agents/skills/dax/SKILL.md`: measures and semantic logic
+- `.agents/skills/report/SKILL.md`: report composition, states, and filters
+- `.agents/skills/fabric/SKILL.md`: service and Fabric work
+- `.agents/skills/validation/SKILL.md`: completion proof
 
 Pi is optional. Use `scripts/doctor.mjs` and `scripts/validate-pbip.mjs`
 directly in any harness.

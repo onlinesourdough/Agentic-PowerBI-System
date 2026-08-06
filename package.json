@@ -19,7 +19,7 @@
   },
   "pi": {
     "extensions": ["extensions/index.ts"],
-    "skills": ["skills"],
+    "skills": [".agents/skills"],
     "prompts": ["prompts"]
   },
   "scripts": {
