@@ -34,7 +34,7 @@ function walk(dir, predicate, out = []) {
   if (!isDir(dir)) return out;
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
-    if (entry.name === ".git" || entry.name === "node_modules" || entry.name === ".pi") continue;
+    if (entry.name === ".git" || entry.name === "node_modules") continue;
     if (ignoreTests && entry.name === "tests") continue;
     if (entry.isDirectory()) walk(full, predicate, out);
     else if (predicate(full)) out.push(full);
@@ -49,7 +49,7 @@ function findDirs(start, suffix) {
     if (path.basename(dir).endsWith(suffix)) out.push(dir);
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       if (!entry.isDirectory()) continue;
-      if ([".git", "node_modules", ".pi"].includes(entry.name)) continue;
+      if ([".git", "node_modules"].includes(entry.name)) continue;
       if (ignoreTests && entry.name === "tests") continue;
       visit(path.join(dir, entry.name));
     }

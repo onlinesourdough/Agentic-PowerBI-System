@@ -11,15 +11,10 @@ Use this skill when working with Power BI Service or Microsoft Fabric.
 
 ```bash
 fab --version
-fab auth status
-fab ls
 ```
 
-If not logged in, ask the user to run:
-
-```bash
-fab auth login
-```
+Only inspect an approved workspace or item after the user supplies that scope
+and the operation is relevant. A version check alone is not service proof.
 
 ## Path format
 
