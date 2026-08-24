@@ -1,9 +1,9 @@
 {
-  "name": "powerbi-template",
+  "name": "agentic-powerbi-system",
   "version": "0.2.0",
-  "description": "Project-local context, skills, and validation for owned Power BI solutions.",
+  "description": "Agentic Power BI System: a standalone, decision-first Power BI workflow with durable proof.",
   "keywords": [
-    "pi-package",
+    "agentic-system",
     "agent-skills",
     "power-bi",
     "pbip",
@@ -13,21 +13,40 @@
     "business-analytics"
   ],
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/onlinesourdough/PowerBI-template.git"
-  },
-  "pi": {
-    "extensions": ["extensions/index.ts"],
-    "skills": [".agents/skills"],
-    "prompts": ["prompts"]
-  },
+  "files": [
+    "AGENTS.md",
+    "README.md",
+    "LICENSE",
+    ".agents/skills",
+    "docs",
+    "examples",
+    "workspace/PROJECT-BRIEF.md",
+    "workspace/README.md",
+    "workspace/briefs",
+    "workspace/models",
+    "workspace/reports",
+    "workspace/state",
+    "workspace/runs",
+    "workspace/history/runs.jsonl",
+    "workspace/learning",
+    "workspace/engine/checks.py",
+    "workspace/engine/doctor.mjs",
+    "workspace/engine/seed-guard.mjs",
+    "workspace/engine/tracer.py",
+    "workspace/engine/validate-pbip.mjs",
+    "workspace/engine/tests/test_template.py",
+    "workspace/engine/tests/test-validator.mjs",
+    "workspace/engine/tests/fixtures"
+  ],
   "scripts": {
-    "doctor": "node scripts/doctor.mjs",
-    "validate": "node scripts/validate-pbip.mjs . --ignore-tests",
-    "test": "node tests/test-validator.mjs"
+    "doctor": "node workspace/engine/doctor.mjs",
+    "validate": "node workspace/engine/validate-pbip.mjs . --ignore-tests",
+    "test": "node workspace/engine/tests/test-validator.mjs && python3 -m unittest discover -s workspace/engine/tests -p 'test_*.py'",
+    "trace": "python3 workspace/engine/tracer.py --promote-example",
+    "prepack": "node workspace/engine/seed-guard.mjs"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20",
+    "python": ">=3.9"
   }
 }

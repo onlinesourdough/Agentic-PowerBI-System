@@ -31,3 +31,24 @@ Use direct JSON editing only when the change is small and the structure is clear
 - Folder name and JSON `name` should match.
 - Ask before deleting pages/visuals or bulk formatting.
 - Validate after edits.
+
+## Harness-neutral page-plan contract
+
+Use this contract when planning a page from a `business_question` input. Return
+these fields in order, with names that a caller can consume without a command
+extension:
+
+```text
+page title:
+audience and decision:
+required measures/fields:
+KPI row:
+main visuals:
+slicers/filters:
+business interpretation text:
+validation checklist:
+```
+
+The page title must answer the business question, and the interpretation must
+state the action or decision supported by the evidence. Do not claim data,
+refresh, or visual validation that was not run.

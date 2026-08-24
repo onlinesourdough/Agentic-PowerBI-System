@@ -42,6 +42,24 @@ Interpretation:
 Validation:
 ```
 
+## Harness-neutral audit contract
+
+Use this contract when the route is an audit. The input is an optional bounded
+`focus` value; it is not a transcript. Return:
+
+```text
+semantic model structure:
+DAX measures and metadata:
+Power Query/data shaping risks:
+report design and storytelling:
+validation blockers/warnings:
+recommended next actions:
+```
+
+Include exact paths for findings and identify the owner or missing evidence for
+each material risk. Keep the business question, decision, grain, KPI owner,
+data boundary, and proof journey visible in the result.
+
 ## Good Power BI habits
 
 - One page should answer one business question.

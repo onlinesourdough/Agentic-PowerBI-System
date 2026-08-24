@@ -37,7 +37,7 @@ Project/
 5. Validate immediately.
 
 ```bash
-node scripts/validate-pbip.mjs .
+node workspace/engine/validate-pbip.mjs .
 pbir validate "Report.Report" --all
 ```
 
@@ -49,7 +49,7 @@ When renaming tables, columns, measures, pages, or visuals, search across:
 - relationships
 - PBIR visual JSON
 - filters and sort definitions
-- report extensions / visual calculations
+- report metadata / visual calculations
 - DAX query files
 - diagram layouts
 
