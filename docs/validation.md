@@ -73,3 +73,25 @@ Remaining risks:
 Never claim service refresh, RLS, publish, or native Power BI validation unless
 the corresponding evidence exists and its owner and boundary are recorded in
 the brief.
+
+## Periodic System audit
+
+The periodic audit is separate from the validation ladder and from per-change
+Review. Choose its accumulated-state scope explicitly:
+
+```sh
+python3 workspace/engine/system_audit.py --scope repository
+python3 workspace/engine/system_audit.py --scope workspace
+python3 workspace/engine/system_audit.py --scope both
+```
+
+Repository scope reads the configured upstream directly and compares ancestry
+in temporary storage; it does not fetch into the audited checkout. Workspace
+scope reads the project brief, run/history/proof relations, and failure and
+recovery evidence without appending an audit record. A missing required fact
+that cannot be read is `BLOCKED`, an observed defect is `FAIL`, and only
+complete healthy evidence is `PASS`.
+
+Remote identities must be credential-free. The audit accepts ordinary HTTPS,
+SSH/scp-style, and local/file identities, but rejects HTTPS userinfo, SSH
+passwords, and query or fragment token material before any Git network command.

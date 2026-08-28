@@ -23,6 +23,10 @@ they own. It is a filesystem workflow, not a service or orchestration runtime.
    - `report` for page plans, report states, visuals, filters, and layout;
    - `fabric` for approved service/workspace checks and publish operations;
    - `validation` for deterministic local and optional native proof.
+   - `system-audit` for a strictly read-only periodic repository, workspace,
+     or combined accumulated-state audit.
+   A `system-audit` returns its result directly and does not continue to the
+   run-writing or example-promotion steps below.
 4. Create `workspace/runs/<run-id>/` and write structured `input.json`,
    `output.json`, and `proof.json`. Failures write `failure.json`; recoveries
    write `recovery.json` in their new run directory.
@@ -42,12 +46,13 @@ non-empty ledger or mutable workspace evidence without changing that evidence.
 The route accepts structured references:
 
 ```text
-route: audit | page-plan | validation | model | report | service | system-proof
+route: audit | page-plan | validation | model | report | service | system-audit | system-proof
 input_ref: repository path, fixture reference, or approved work reference
 decision_ref: workspace/PROJECT-BRIEF.md or a more specific brief reference
 focus: optional bounded audit focus
 business_question: required for a page-plan route
 target: repository/project path for validation
+scope: repository | workspace | both (required for system-audit)
 promote_example: explicit true only when curation is desired
 ```
 
@@ -73,9 +78,12 @@ unavailable_checks
 remaining_risks
 ```
 
-An audit must cover semantic model structure, DAX and measure metadata, data
+The Power BI/domain `audit` route must cover semantic model structure, DAX and
+measure metadata, data
 shaping risks, report storytelling, validation blockers/warnings, and next
-actions. A page plan must return page title, audience and decision, required
+actions. A `system-audit` returns exactly `PASS`, `FAIL`, or `BLOCKED` with
+observable evidence, evidence gaps, and the smallest next action; it never
+writes a run record. A page plan must return page title, audience and decision, required
 measures/fields, KPI row, main visuals, slicers/filters, interpretation text,
 and a validation checklist. A validation route must run deterministic checks
 first, then report optional native checks only when installed, with blockers,

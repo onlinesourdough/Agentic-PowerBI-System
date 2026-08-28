@@ -39,6 +39,7 @@ REQUIRED_PATHS = (
     ".agents/skills/pbip/SKILL.md",
     ".agents/skills/dax/SKILL.md",
     ".agents/skills/report/SKILL.md",
+    ".agents/skills/system-audit/SKILL.md",
     ".agents/skills/fabric/SKILL.md",
     ".agents/skills/validation/SKILL.md",
     "workspace/PROJECT-BRIEF.md",
@@ -54,7 +55,9 @@ REQUIRED_PATHS = (
     "workspace/engine/checks.py",
     "workspace/engine/doctor.mjs",
     "workspace/engine/seed-guard.mjs",
+    "workspace/engine/system_audit.py",
     "workspace/engine/validate-pbip.mjs",
+    "workspace/engine/tests/test_system_audit.py",
     "workspace/engine/tests/test_template.py",
     "workspace/engine/tests/test-validator.mjs",
     "docs/contract.md",
@@ -375,6 +378,18 @@ def _check_ledger(path: Path, root: Path, errors: List[str]) -> None:
 
         if not duplicate_run_id:
             seen[run_id] = record
+
+
+def check_ledger(root: Path) -> List[str]:
+    """Return ledger contract violations without inspecting other scopes."""
+
+    root = root.resolve()
+    path = root / "workspace" / "history" / "runs.jsonl"
+    if not path.is_file():
+        return ["workspace/history/runs.jsonl must be a file"]
+    errors: List[str] = []
+    _check_ledger(path, root, errors)
+    return errors
 
 
 def _parser() -> argparse.ArgumentParser:

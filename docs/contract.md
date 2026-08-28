@@ -40,6 +40,12 @@ It must:
 5. preserve failure and recovery evidence without rewriting the failed record;
 6. promote an example only after an explicit curation choice.
 
+The periodic `system-audit` route is the read-only exception to run recording:
+it selects `repository`, `workspace`, or `both`, returns exactly `PASS`,
+`FAIL`, or `BLOCKED` with evidence, gaps, and a next action, and never writes a
+run, ledger record, example, repository state, or service state. It reads the
+existing Power BI/domain audit and validation contracts by reference.
+
 Inputs are references and structured facts, not request transcripts. Nothing
 in the route may invent PBIX/PBIP, refresh, access, tenant, or publish proof.
 

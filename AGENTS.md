@@ -41,6 +41,8 @@ the repository.
 - `.agents/skills/fabric/SKILL.md`: service and Fabric work under authority
   gates
 - `.agents/skills/validation/SKILL.md`: deterministic completion proof
+- `.agents/skills/system-audit/SKILL.md`: read-only periodic accumulated-state
+  health
 
 The specialist skills are harness-neutral contracts. The deterministic doctor,
 PBIP validator, Python System engine, and tests live under
@@ -53,6 +55,8 @@ workspace evidence causes an explicit failure and is never removed.
 - Keep KPI name, DAX, format, interpretation, limitation, and business owner
   together.
 - Use deterministic validation before visual inspection or guesses.
+- Keep deterministic validation, Power BI/domain audit, semantic or visual
+  review, per-change Review, and periodic System audit as distinct routes.
 - Preserve data ownership, row-level security, refresh, workspace, and publish
   authority boundaries.
 - Ask before deleting pages or visuals, rebinding reports, changing `.platform`
@@ -69,6 +73,7 @@ workspace evidence causes an explicit failure and is never removed.
 node workspace/engine/doctor.mjs
 node workspace/engine/validate-pbip.mjs . --ignore-tests
 npm test
+python3 workspace/engine/system_audit.py --scope both
 npm pack --dry-run
 ```
 

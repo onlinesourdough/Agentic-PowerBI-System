@@ -29,6 +29,7 @@ boundaries.
 npm run doctor
 npm run validate
 npm test
+npm run audit -- --scope both
 npm pack --dry-run
 ```
 
@@ -52,6 +53,32 @@ npm pack --dry-run
 | Report pages, visuals, layout, and filters | `.agents/skills/report/SKILL.md` |
 | Fabric or Power BI Service work | `.agents/skills/fabric/SKILL.md` |
 | Completion proof | `.agents/skills/validation/SKILL.md` |
+| Periodic accumulated-state health | `.agents/skills/system-audit/SKILL.md` |
+
+## Distinct assurance routes
+
+- **Deterministic validation** runs mechanical PBIP/PBIR/TMDL and repository
+  checks against a named target.
+- **Power BI/domain audit** applies the `powerbi` contract to business meaning,
+  model design, DAX, shaping risk, report storytelling, and ownership.
+- **Semantic or visual review** uses specialist judgment or native tools to
+  assess behavior that deterministic checks cannot prove.
+- **Per-change Review** is the lifecycle gate for accepting a proposed change.
+- **Periodic System audit** reads accumulated repository/workspace health,
+  proves its live upstream relation, and returns `PASS`, `FAIL`, or `BLOCKED`
+  without repair or durable audit artifacts.
+
+Select the periodic scope explicitly:
+
+```sh
+npm run audit -- --scope repository
+npm run audit -- --scope workspace
+npm run audit -- --scope both
+```
+
+The audit uses current repository and workspace truth. It references the
+existing domain-audit and validation contracts and does not require another
+System implementation.
 
 An approved Agentic Design System handoff can supply `DESIGN.md`, report
 composition, tokens, and preview intent. Revalidate it against actual Power BI
