@@ -21,8 +21,8 @@ not fill unknowns with invented data or service evidence.
   states, accessibility, and mobile requirements.
 - **Publish authority:** Approved workspace/item, promotion authority, overwrite
   boundary, sensitivity/access review, and rollback path.
-- **Design handoff:** Optional path to an approved Design-template bundle and the
-  decisions it settles; the handoff does not replace validation.
+- **Design handoff:** Optional path to an approved Agentic Design System bundle
+  and the decisions it settles; the handoff does not replace validation.
 - **Proof:** The real question, model validation, refresh, access, publish, and
   decision journey that must pass.
 - **Non-goals:** What the first complete result deliberately excludes.

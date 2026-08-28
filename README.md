@@ -9,8 +9,8 @@ Power BI model, report, and decision workflow with durable proof.
 business question → definitions and data → model → report → decision → proof
 ```
 
-Start from the project brief, resolved business context, or an approved
-Design-template handoff. This repository owns the Power BI solution after the
+Start from the project brief, resolved business context, or an approved Agentic
+Design System handoff. This repository owns the Power BI solution after the
 handoff while preserving the decision, data, security, refresh, and publish
 boundaries.
 
@@ -53,10 +53,10 @@ npm pack --dry-run
 | Fabric or Power BI Service work | `.agents/skills/fabric/SKILL.md` |
 | Completion proof | `.agents/skills/validation/SKILL.md` |
 
-An approved Design-template handoff can supply `DESIGN.md`, report composition,
-tokens, and preview intent. Revalidate it against actual Power BI capabilities,
-data, accessibility, and tenant constraints; the handoff is reference input,
-not an execution requirement.
+An approved Agentic Design System handoff can supply `DESIGN.md`, report
+composition, tokens, and preview intent. Revalidate it against actual Power BI
+capabilities, data, accessibility, and tenant constraints; the handoff is
+reference input, not an execution requirement.
 
 ## Persistent workspace
 

@@ -24,7 +24,7 @@ the repository.
 1. Read `workspace/PROJECT-BRIEF.md` and preserve any resolved business or
    project context.
 2. Name the decision, audience, KPI definitions, data owners, refresh/runtime,
-   proof, and optional Design-template handoff.
+   proof, and optional Agentic Design System handoff.
 3. Model first: use a star schema, explicit relationships, hidden technical
    keys, and explicit measures.
 4. Report second: one page per business question, with the decision and its
