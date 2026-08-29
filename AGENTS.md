@@ -11,13 +11,14 @@ System Template contract: `workspace/` is persistent operational truth,
 the public contract and validation recipe. The System is self-contained and is
 not installed into another agent runtime.
 
-The primary route is `.agents/skills/agentic-powerbi-system/SKILL.md`. It first
-inspects relevant records in `workspace/history/runs.jsonl`, routes Power BI
-work through the specialist skills, and preserves input, output, proof,
-failure, recovery, and previous-run references. Request content is represented
-by references and structured facts, never by transcript files. Do not put
-secrets, tenant identifiers, private data, or generated local Power BI state in
-the repository.
+The repository-local shelf and its ownership rules are indexed in
+`.agents/skills/README.md`. The primary route is
+`.agents/skills/agentic-powerbi-system/SKILL.md`. It first inspects relevant
+records in `workspace/history/runs.jsonl`, routes Power BI work through the
+specialist skills, and preserves input, output, proof, failure, recovery, and
+previous-run references. Request content is represented by references and
+structured facts, never by transcript files. Do not put secrets, tenant
+identifiers, private data, or generated local Power BI state in the repository.
 
 ## Start
 

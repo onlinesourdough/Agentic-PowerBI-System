@@ -17,8 +17,9 @@ boundaries.
 ## Start
 
 1. Complete [workspace/PROJECT-BRIEF.md](workspace/PROJECT-BRIEF.md).
-2. Read the primary route at
-   `.agents/skills/agentic-powerbi-system/SKILL.md`.
+2. Use the [repository-local skill index](.agents/skills/README.md) to select a
+   route, beginning with
+   `.agents/skills/agentic-powerbi-system/SKILL.md` for System work.
 3. Keep business definitions next to their measure, format, interpretation, and
    limitation.
 4. Build the model before the report.

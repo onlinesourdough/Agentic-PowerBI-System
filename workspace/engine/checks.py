@@ -4,8 +4,11 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import json
+import os
 import re
+import stat
 import sys
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Tuple
@@ -34,6 +37,7 @@ TOOLCHAIN_ROOT_FILES = {
 REQUIRED_PATHS = (
     "AGENTS.md",
     "README.md",
+    ".agents/skills/README.md",
     ".agents/skills/agentic-powerbi-system/SKILL.md",
     ".agents/skills/powerbi/SKILL.md",
     ".agents/skills/pbip/SKILL.md",
@@ -86,6 +90,10 @@ LEDGER_FIELDS = {
     "recovery",
 }
 TIMESTAMP_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$")
+SKILL_INDEX_ENTRY_RE = re.compile(
+    r"`\.agents/skills/([a-z0-9]+(?:-[a-z0-9]+)*)/SKILL\.md`"
+)
+SKILL_NAME_RE = re.compile(r"^name:[ \t]*(.*?)[ \t]*$")
 
 
 def repository_root() -> Path:
@@ -96,6 +104,8 @@ def _public_text_files(root: Path) -> Iterable[Path]:
     """Yield source files that form the public or operational contract."""
 
     for path in sorted(root.rglob("*")):
+        if path.is_symlink():
+            continue
         if not path.is_file():
             continue
         if ".git" in path.parts or "node_modules" in path.parts:
@@ -146,6 +156,159 @@ def _relative_reference(root: Path, value: object) -> Optional[Path]:
     return candidate
 
 
+def _path_exists_without_symlinks(root: Path, relative: str) -> bool:
+    """Check a repository path component by component without following links."""
+
+    current = root
+    for part in Path(relative).parts:
+        current /= part
+        try:
+            mode = current.lstat().st_mode
+        except OSError:
+            return False
+        if stat.S_ISLNK(mode):
+            return False
+    return True
+
+
+def _frontmatter_skill_name(payload: Path, root: Path, errors: List[str]) -> Optional[str]:
+    """Return the one simple frontmatter name, or report a malformed payload."""
+
+    label = payload.relative_to(root).as_posix()
+    try:
+        lines = payload.read_text(encoding="utf-8").splitlines()
+    except (OSError, UnicodeDecodeError) as exc:
+        errors.append(f"skill payload cannot be read: {label} ({exc})")
+        return None
+
+    if not lines or lines[0].strip() != "---":
+        errors.append(f"skill payload has malformed frontmatter: {label}")
+        return None
+    try:
+        closing = next(
+            index for index, line in enumerate(lines[1:], start=1) if line.strip() == "---"
+        )
+    except StopIteration:
+        errors.append(f"skill payload has malformed frontmatter: {label}")
+        return None
+
+    values = [
+        match.group(1)
+        for line in lines[1:closing]
+        if (match := SKILL_NAME_RE.fullmatch(line)) is not None
+    ]
+    if len(values) != 1 or not values[0]:
+        errors.append(
+            f"skill payload frontmatter must contain exactly one name value: {label}"
+        )
+        return None
+
+    value = values[0]
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+        value = value[1:-1]
+    if not value:
+        errors.append(
+            f"skill payload frontmatter must contain exactly one name value: {label}"
+        )
+        return None
+    return value
+
+
+def _check_skill_tree_without_following(shelf: Path, root: Path, errors: List[str]) -> None:
+    """Reject skill-tree links and nested payloads without traversing links."""
+
+    pending = [shelf]
+    while pending:
+        directory = pending.pop()
+        try:
+            entries = sorted(os.scandir(directory), key=lambda entry: entry.name)
+        except OSError as exc:
+            errors.append(
+                f"skill shelf directory cannot be read: "
+                f"{directory.relative_to(root).as_posix()} ({exc})"
+            )
+            continue
+        for entry in entries:
+            path = Path(entry.path)
+            relative = path.relative_to(shelf)
+            if entry.is_symlink():
+                errors.append(
+                    f"skill tree symlink is not allowed: "
+                    f"{path.relative_to(root).as_posix()}"
+                )
+                continue
+            if entry.is_dir(follow_symlinks=False):
+                pending.append(path)
+                continue
+            if entry.name == "SKILL.md" and len(relative.parts) != 2:
+                errors.append(
+                    f"nested skill payload is not allowed: "
+                    f"{path.relative_to(root).as_posix()}"
+                )
+
+
+def check_skill_shelf(root: Path) -> List[str]:
+    """Validate the repository-local skill shelf and its human index."""
+
+    root = root.resolve()
+    shelf = root / ".agents" / "skills"
+    errors: List[str] = []
+    if shelf.is_symlink():
+        return ["skill tree symlink is not allowed: .agents/skills"]
+    if not shelf.is_dir():
+        return ["skill shelf must be a directory: .agents/skills"]
+
+    _check_skill_tree_without_following(shelf, root, errors)
+    try:
+        direct_entries = sorted(os.scandir(shelf), key=lambda entry: entry.name)
+    except OSError as exc:
+        return [f"skill shelf cannot be read: .agents/skills ({exc})"]
+
+    skill_directories: Dict[str, Path] = {}
+    for entry in direct_entries:
+        if entry.is_symlink():
+            continue
+        if entry.is_dir(follow_symlinks=False):
+            skill_directories[entry.name] = Path(entry.path)
+        elif entry.name != "README.md":
+            errors.append(f"unexpected direct skill shelf file: .agents/skills/{entry.name}")
+
+    for folder_name, directory in sorted(skill_directories.items()):
+        payload = directory / "SKILL.md"
+        if payload.is_symlink() or not payload.is_file():
+            errors.append(
+                f"skill folder is missing a regular payload: "
+                f".agents/skills/{folder_name}/SKILL.md"
+            )
+            continue
+        declared_name = _frontmatter_skill_name(payload, root, errors)
+        if declared_name is not None and declared_name != folder_name:
+            errors.append(
+                f"skill folder and frontmatter name disagree: {folder_name!r} != "
+                f"{declared_name!r}"
+            )
+
+    index = shelf / "README.md"
+    if index.is_symlink() or not index.is_file():
+        errors.append("skill shelf index must be a regular file: .agents/skills/README.md")
+        return errors
+    try:
+        index_text = index.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        errors.append(f"skill shelf index cannot be read: .agents/skills/README.md ({exc})")
+        return errors
+
+    indexed_names = SKILL_INDEX_ENTRY_RE.findall(index_text)
+    counts = Counter(indexed_names)
+    for name in sorted(name for name, count in counts.items() if count > 1):
+        errors.append(f"skill shelf index repeats entry: {name}")
+    for name in sorted(set(skill_directories).difference(counts)):
+        errors.append(f"skill shelf index is missing entry: {name}")
+    for name in sorted(set(counts).difference(skill_directories)):
+        errors.append(f"skill shelf index contains unknown entry: {name}")
+    return errors
+
+
 def check_structure(root: Path) -> List[str]:
     """Return structural violations; an empty list means the shell is valid."""
 
@@ -178,8 +341,10 @@ def check_structure(root: Path) -> List[str]:
             errors.append(f"legacy hidden path is present: {path.relative_to(root)}")
 
     for relative in REQUIRED_PATHS:
-        if not (root / relative).exists():
+        if not _path_exists_without_symlinks(root, relative):
             errors.append(f"required path is missing: {relative}")
+
+    errors.extend(check_skill_shelf(root))
 
     for path in (root / "workspace", root / "examples", root / "docs"):
         if path.is_symlink():
@@ -400,24 +565,35 @@ def _parser() -> argparse.ArgumentParser:
         default=None,
         help="repository root to check (defaults to this checkout)",
     )
+    parser.add_argument(
+        "--skills-only",
+        action="store_true",
+        help="check only the repository-local skill shelf and ownership index",
+    )
     return parser
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parser().parse_args(argv)
     root = (args.root or repository_root()).resolve()
-    errors = check_structure(root)
+    errors = check_skill_shelf(root) if args.skills_only else check_structure(root)
     if errors:
         print("FAIL: Agentic Power BI System checks", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
 
+    if args.skills_only:
+        print(f"PASS: skill shelf {root / '.agents' / 'skills'}")
+        print("PASS: skill folder names, payload frontmatter, and ownership index")
+        return 0
+
     print(f"PASS: structure {root}")
     print(f"PASS: product {PRODUCT_NAME}")
     print("PASS: visible roots workspace/ examples/ docs/")
     print("PASS: stale-route and public-wording scan")
     print("PASS: curated examples")
+    print("PASS: repository-local skill shelf and ownership index")
     return 0
 
 

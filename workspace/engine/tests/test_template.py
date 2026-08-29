@@ -44,6 +44,101 @@ class AgenticPowerBISystemTests(unittest.TestCase):
             "required path is missing: .agents/skills/validation/SKILL.md",
             errors,
         )
+        self.assertIn(
+            "skill folder is missing a regular payload: "
+            ".agents/skills/validation/SKILL.md",
+            errors,
+        )
+
+    def _temporary_skill_root(self):
+        temporary = tempfile.TemporaryDirectory()
+        root = Path(temporary.name) / "repository"
+        (root / ".agents").mkdir(parents=True)
+        copytree(ROOT / ".agents" / "skills", root / ".agents" / "skills")
+        return temporary, root
+
+    def test_skill_shelf_is_regular_and_complete(self) -> None:
+        self.assertEqual(checks.check_skill_shelf(ROOT), [])
+
+    def test_skill_frontmatter_and_folder_name_are_enforced(self) -> None:
+        cases = (
+            ("malformed", lambda text: text.removeprefix("---\n"), "malformed frontmatter"),
+            (
+                "name mismatch",
+                lambda text: text.replace("name: powerbi", "name: other-powerbi", 1),
+                "skill folder and frontmatter name disagree",
+            ),
+        )
+        for label, mutate, expected in cases:
+            with self.subTest(label=label):
+                temporary, root = self._temporary_skill_root()
+                self.addCleanup(temporary.cleanup)
+                payload = root / ".agents/skills/powerbi/SKILL.md"
+                payload.write_text(
+                    mutate(payload.read_text(encoding="utf-8")), encoding="utf-8"
+                )
+
+                errors = checks.check_skill_shelf(root)
+
+                self.assertTrue(any(expected in error for error in errors), errors)
+
+    def test_skill_shelf_rejects_nesting_direct_files_and_symlinks(self) -> None:
+        for defect in ("nested", "direct-file", "symlink"):
+            with self.subTest(defect=defect):
+                temporary, root = self._temporary_skill_root()
+                self.addCleanup(temporary.cleanup)
+                shelf = root / ".agents/skills"
+                if defect == "nested":
+                    nested = shelf / "powerbi/nested/SKILL.md"
+                    nested.parent.mkdir()
+                    nested.write_text("nested\n", encoding="utf-8")
+                    expected = "nested skill payload is not allowed"
+                elif defect == "direct-file":
+                    (shelf / "NOTES.md").write_text("unexpected\n", encoding="utf-8")
+                    expected = "unexpected direct skill shelf file"
+                else:
+                    (shelf / "linked-index").symlink_to("README.md")
+                    expected = "skill tree symlink is not allowed"
+
+                errors = checks.check_skill_shelf(root)
+
+                self.assertTrue(any(expected in error for error in errors), errors)
+
+    def test_skill_index_rejects_missing_duplicate_and_unknown_entries(self) -> None:
+        cases = (
+            (
+                "missing",
+                lambda text: "\n".join(
+                    line for line in text.splitlines() if "/dax/SKILL.md`" not in line
+                )
+                + "\n",
+                "skill shelf index is missing entry: dax",
+            ),
+            (
+                "duplicate",
+                lambda text: text
+                + "\n- `.agents/skills/dax/SKILL.md`: duplicate test entry.\n",
+                "skill shelf index repeats entry: dax",
+            ),
+            (
+                "unknown",
+                lambda text: text
+                + "\n- `.agents/skills/unknown/SKILL.md`: unknown test entry.\n",
+                "skill shelf index contains unknown entry: unknown",
+            ),
+        )
+        for label, mutate, expected in cases:
+            with self.subTest(label=label):
+                temporary, root = self._temporary_skill_root()
+                self.addCleanup(temporary.cleanup)
+                index = root / ".agents/skills/README.md"
+                index.write_text(
+                    mutate(index.read_text(encoding="utf-8")), encoding="utf-8"
+                )
+
+                errors = checks.check_skill_shelf(root)
+
+                self.assertIn(expected, errors)
 
     def _temporary_seed(self, source_root: Path = ROOT):
         temporary = tempfile.TemporaryDirectory()
