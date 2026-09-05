@@ -1,3 +1,7 @@
+![Agentic Power BI System](docs/branding/powerbi-banner.png)
+
+[<img src="docs/branding/powerbi-icon.png" alt="Agentic Power BI System icon" width="48" height="48">](docs/branding/powerbi-icon.png)
+
 ![Agentic Power BI System workflow](docs/agentic-power-bi-system-overview.svg)
 
 # Agentic Power BI System
