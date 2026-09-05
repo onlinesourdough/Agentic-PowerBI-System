@@ -33,6 +33,8 @@ fab open "Sales.Workspace/Sales Report.Report"
 ## Safety
 
 - Verify workspace and item before changing it.
-- Ask before import/export overwrite, publish, move, delete, or permission changes.
+- Require explicit authorization for import/export overwrite, publish, move,
+  delete, or permission changes. Existing authorization must cover the exact
+  target and operation; local source-edit authority does not cover service writes.
 - Use `-f` only when the user accepts the overwrite/sensitivity-label implications.
 - Record exact commands run.

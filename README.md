@@ -16,15 +16,17 @@ boundaries.
 
 ## Start
 
-1. Complete [workspace/PROJECT-BRIEF.md](workspace/PROJECT-BRIEF.md).
+1. For a Power BI outcome, resolve relevant gaps in
+   [workspace/PROJECT-BRIEF.md](workspace/PROJECT-BRIEF.md) using existing context.
 2. Use the [repository-local skill index](.agents/skills/README.md) to select a
    route, beginning with
    `.agents/skills/agentic-powerbi-system/SKILL.md` for System work.
 3. Keep business definitions next to their measure, format, interpretation, and
    limitation.
-4. Build the model before the report.
+4. For model/report builds, establish the model before the report.
 5. Make each report page answer one named business question.
-6. Validate before opening, publishing, or claiming completion.
+6. Validate PBIP/PBIR/TMDL edits before opening or claiming completion;
+   publishing also requires its own authority and evidence.
 
 ```sh
 npm run doctor
@@ -110,9 +112,11 @@ README and proof file.
 
 ## Safety
 
-Ask before deleting pages or visuals, rebinding reports, changing `.platform`
-IDs, publishing, overwriting service items, or changing refresh and access
-policy. Keep tenant IDs, credentials, connection strings, private data, and
+Require explicit authorization for deleting pages or visuals, rebinding reports,
+changing `.platform` IDs, publishing, overwriting service items, or changing
+RLS, refresh and access policy. Honor existing exact authorization; local edits
+do not authorize protected identity or service changes. Keep tenant IDs,
+credentials, connection strings, private data, and
 generated local Power BI state out of Git and fixtures.
 
 `npm pack --dry-run` runs a read-only seed guard. It succeeds for blank

@@ -1,19 +1,16 @@
 ---
 name: report
-description: Design and edit Power BI PBIR reports: pages, visuals, themes, filters, layout, bindings, and validation. Prefer pbir CLI when available.
+description: Plan Power BI report pages and edit PBIR visuals, themes, filters, and layout.
 ---
 
 # PBIR Report Work
 
-## Preferred tool workflow
+## Editing tools
 
-```bash
-pbir tree "Report.Report" -v
-pbir backup "Report.Report" -m "Before edits"
-pbir validate "Report.Report" --all
-```
-
-Use direct JSON editing only when the change is small and the structure is clear.
+For PBIR edits, inspect the report structure and preserve a recoverable original.
+Prefer `pbir` when available; direct JSON edits are valid when structure and
+references can be checked. Use `validation` after edits and report unavailable
+native checks honestly. A page plan alone does not require CLI checks or backups.
 
 ## Design rules
 
@@ -29,7 +26,10 @@ Use direct JSON editing only when the change is small and the structure is clear
 - JSON must be valid.
 - Page/visual folder names should avoid spaces and punctuation.
 - Folder name and JSON `name` should match.
-- Ask before deleting pages/visuals or bulk formatting.
+- Complete bulk formatting within the exact authorized local scope. Require
+  explicit authorization for deleting pages/visuals, rebinding, `.platform`
+  identity, RLS, service, publish, or access/refresh changes. Honor authorization
+  already given for the specific action; ask when the scope expands.
 - Validate after edits.
 
 ## Harness-neutral page-plan contract

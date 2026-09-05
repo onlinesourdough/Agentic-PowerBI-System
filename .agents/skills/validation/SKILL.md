@@ -1,50 +1,13 @@
 ---
 name: validation
-description: Validate Power BI work before completion: PBIP structure, PBIR JSON, report binding, TMDL warnings, field references, rename cascades, and toolchain status.
+description: Validate PBIP/PBIR/TMDL edits or audit project structure, bindings, field references, rename cascades, and available native checks.
 ---
 
 # Power BI Validation
 
-Use this before saying a Power BI task is done.
-
-## Validation ladder
-
-1. Local structural validation:
-
-```bash
-node workspace/engine/validate-pbip.mjs .
-```
-
-2. PBIR validation when `pbir` is available:
-
-```bash
-pbir validate "Report.Report" --all
-```
-
-3. Fabric/service checks when relevant:
-
-```bash
-fab exists "Workspace.Workspace/Model.SemanticModel"
-```
-
-Run service checks only for an approved target. Do not turn a missing optional
-tool or an unrun service check into a completion claim.
-
-4. Rename cascade checks:
-
-```bash
-rg "Old Name|OldTable|OldMeasure" .
-```
-
-## Report format
-
-```text
-Validation run:
-Blockers:
-Warnings:
-Files changed:
-Remaining risks:
-```
+Use this for PBIP/PBIR/TMDL edits or a requested project validation. Business
+questions and page plans need their relevant semantic/planning review, not
+structural commands against nonexistent or unchanged artifacts.
 
 ## Harness-neutral validation contract
 
@@ -57,7 +20,11 @@ and runs these steps in order:
 3. approved Fabric existence or item checks only when service scope is
    relevant.
 
-Return blockers, warnings, exact paths, commands run, unavailable checks, and
+For renames, also search affected model/report references for the old names,
+including filters, sort definitions, DAX queries, and diagram layouts. A
+missing optional tool or an unrun service check is not a completion claim.
+
+Return files changed, blockers, warnings, exact paths, commands run, unavailable checks, and
 remaining risks. Native Power BI, Fabric, Tabular Editor, and DAX Studio
 results are optional evidence and must never be invented.
 

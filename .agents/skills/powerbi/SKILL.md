@@ -1,6 +1,6 @@
 ---
 name: powerbi
-description: Business analytics workflow for Power BI: translate business questions into model needs, DAX measures, report pages, KPIs, and interpretation. Use for planning dashboards, cases, and analytical storytelling.
+description: "Business analytics workflow for Power BI: translate business questions into model needs, DAX measures, report pages, KPIs, and interpretation. Use for planning dashboards, cases, and analytical storytelling."
 ---
 
 # Power BI Business Analytics
@@ -8,6 +8,10 @@ description: Business analytics workflow for Power BI: translate business questi
 Use this skill when the work is about the business question, KPI design, dashboard structure, or analytical interpretation.
 
 ## Workflow
+
+Use the parts relevant to the requested outcome and preserve resolved context.
+Business interpretation or a page plan does not require creating a model;
+for a model/report build, establish model requirements before report design.
 
 1. Clarify the business question:
    - Who is the audience?

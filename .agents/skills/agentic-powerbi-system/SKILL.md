@@ -14,15 +14,18 @@ they own. It is a filesystem workflow, not a service or orchestration runtime.
 1. Read `workspace/PROJECT-BRIEF.md` and inspect relevant records in
    `workspace/history/runs.jsonl` before selecting a route. Match the input
    reference and route, not copied request text, to find the previous run.
-2. Name the decision, audience, KPI contract, data owner, grain, freshness,
-   RLS owner, refresh/runtime boundary, publish authority, and proof needed.
+2. Resolve the decision, audience, KPI contract, data owner, grain, freshness,
+   RLS owner, refresh/runtime boundary, publish authority, and proof relevant
+   to the requested outcome from existing context. Do not require unrelated
+   service details for local planning or validation.
 3. Route the work to one or more specialist skills:
    - `powerbi` for business question, decision, KPI definitions, and audit;
    - `pbip` for PBIP/PBIR/TMDL structure and safe project edits;
    - `dax` for explicit measures and semantic logic;
    - `report` for page plans, report states, visuals, filters, and layout;
    - `fabric` for approved service/workspace checks and publish operations;
-   - `validation` for deterministic local and optional native proof.
+   - `validation` for PBIP/PBIR/TMDL edits or requested project validation,
+     with deterministic local and optional native proof;
    - `system-audit` for a strictly read-only periodic repository, workspace,
      or combined accumulated-state audit.
    A `system-audit` returns its result directly and does not continue to the
@@ -93,11 +96,13 @@ warnings, exact paths, unavailable checks, and commands run.
 
 The route never substitutes a generated artifact for evidence. Keep each KPI's
 name, DAX, format, interpretation, limitation, source, and business owner
-together. Preserve star-schema grain, explicit relationships, hidden technical
+together. For model/report builds, establish the model before report work.
+Preserve star-schema grain, explicit relationships, hidden technical
 keys, explicit measures, data ownership, RLS, refresh/runtime, workspace, and
-publish authority. Ask before deleting or rebinding report assets, changing
-`.platform` identity, publishing, overwriting service items, or changing
-access/refresh policy.
+publish authority. Require explicit authorization before deleting or rebinding
+report assets, changing `.platform` identity, publishing, overwriting service
+items, or changing RLS/access/refresh policy. Honor existing exact authorization;
+bounded local editing does not authorize protected identity or service changes.
 
 ## Failure and recovery
 

@@ -24,10 +24,11 @@ identifiers, private data, or generated local Power BI state in the repository.
 
 1. Read `workspace/PROJECT-BRIEF.md` and preserve any resolved business or
    project context.
-2. Name the decision, audience, KPI definitions, data owners, refresh/runtime,
-   proof, and optional Agentic Design System handoff.
-3. Model first: use a star schema, explicit relationships, hidden technical
-   keys, and explicit measures.
+2. For Power BI outcomes, resolve the relevant decision, audience, KPI definitions,
+   data owners, refresh/runtime, proof, and optional design handoff from existing
+   context. Repository maintenance does not require a new business brief.
+3. When building a model/report outcome, model first: use a star schema,
+   explicit relationships, hidden technical keys, and explicit measures.
 4. Report second: one page per business question, with the decision and its
    evidence ahead of decoration.
 5. Validate every PBIP/PBIR/TMDL edit and record unavailable optional tools.
@@ -60,9 +61,10 @@ workspace evidence causes an explicit failure and is never removed.
   review, per-change Review, and periodic System audit as distinct routes.
 - Preserve data ownership, row-level security, refresh, workspace, and publish
   authority boundaries.
-- Ask before deleting pages or visuals, rebinding reports, changing `.platform`
-  IDs, publishing, overwriting service items, or changing access/refresh
-  policy.
+- Require explicit authorization for deleting pages or visuals, rebinding
+  reports, changing `.platform` IDs, publishing, overwriting service items, or
+  changing RLS/access/refresh policy. Honor existing exact authorization;
+  local editing scope does not authorize protected identity or service changes.
 - Do not invent PBIX/PBIP evidence or require optional Power BI tools that are
   unavailable.
 - Finish with changed files, validation evidence, unavailable checks, and
