@@ -34,6 +34,28 @@ pbir validate "Report.Report" --all
 Use Fabric or workspace checks only with an approved target and authority. Do
 not run an authentication-status check as a substitute for publish proof.
 
+## Representative data-domain regressions
+
+This is the canonical representative-regression recipe for the specialist
+routes.
+
+Retain the closest safe regression when a change affects business behavior;
+use synthetic or reduced data rather than a production extract:
+
+- **KPI:** known input values and filter context produce the expected measure,
+  including a changed base/derived measure boundary.
+- **Data/model:** the representative fact grain, relationship, or shaping rule
+  preserves expected rows, totals, and decision-relevant dimensions.
+- **Decision/access:** permitted and excluded data produce the expected
+  decision evidence without claiming live RLS or service access validation.
+
+Run the applicable deterministic or native check in its authorized scope and
+inspect the final bytes and affected documentation. Do not delete, skip,
+weaken, or narrow validation merely to obtain green results. If a legitimate
+contract change replaces coverage, record its rationale and replacement proof.
+An unavailable native, RLS, refresh, or service check remains an explicit gap;
+these regressions do not require browser E2E.
+
 ## System route proof
 
 Use a disposable checkout or temporary copy so operational artifacts do not

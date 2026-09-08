@@ -34,6 +34,12 @@ for a model/report build, establish model requirements before report design.
    - visuals answer the question
    - assumptions/limitations are documented
 
+For a material data, model, or KPI decision, follow the
+[shared data-change boundary](../../../docs/contract.md#data-change-boundary),
+inspect the relevant authorized brief and artifacts plus reasonable
+alternatives, and record the chosen option, rationale, consequences, and
+decision owner. Ask only when that authority or decision is genuinely absent.
+
 ## Output format
 
 ```text
@@ -63,6 +69,12 @@ recommended next actions:
 Include exact paths for findings and identify the owner or missing evidence for
 each material risk. Keep the business question, decision, grain, KPI owner,
 data boundary, and proof journey visible in the result.
+
+When diagnosing a data-domain defect, reproduce the affected decision or
+metric at the nearest safe representative boundary before proposing a fix. If
+the original behavior cannot be reproduced, say why; then use the
+[canonical regression recipe](../../../docs/validation.md#representative-data-domain-regressions)
+and report the result or evidence gap.
 
 ## Good Power BI habits
 

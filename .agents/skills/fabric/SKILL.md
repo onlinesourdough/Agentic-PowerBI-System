@@ -38,3 +38,9 @@ fab open "Sales.Workspace/Sales Report.Report"
   target and operation; local source-edit authority does not cover service writes.
 - Use `-f` only when the user accepts the overwrite/sensitivity-label implications.
 - Record exact commands run.
+
+For any approved data, RLS, permission, or refresh operation, follow the
+[shared data-change boundary](../../../docs/contract.md#data-change-boundary)
+with the Fabric workspace/item as the target. A successful authentication,
+listing, or source edit is not proof of refresh, access, or RLS behavior;
+report an unrun service check as a gap.

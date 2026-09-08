@@ -24,9 +24,15 @@ For renames, also search affected model/report references for the old names,
 including filters, sort definitions, DAX queries, and diagram layouts. A
 missing optional tool or an unrun service check is not a completion claim.
 
+When a change can affect a KPI, data shape/model, or access-sensitive decision,
+use the [canonical regression recipe](../../../docs/validation.md#representative-data-domain-regressions)
+and report the selected case, its result, or its evidence gap. Inspect actual
+final bytes and affected documentation.
+
 Return files changed, blockers, warnings, exact paths, commands run, unavailable checks, and
 remaining risks. Native Power BI, Fabric, Tabular Editor, and DAX Studio
-results are optional evidence and must never be invented.
+results are optional evidence and must never be invented. Return this handback
+concisely at the caller's requested depth and language.
 
 ## Common blockers
 

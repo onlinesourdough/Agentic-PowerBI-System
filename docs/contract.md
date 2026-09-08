@@ -87,6 +87,17 @@ Optional native Power BI, PBIR, PBIP, Fabric, or Tabular Editor checks are
 reported only when their commands are installed and the project scope permits
 them.
 
+<a id="data-change-boundary"></a>
+
+## Shared data-change boundary
+
+For a material data, model, KPI, RLS, permission, or refresh change, the
+existing brief or output records the exact environment, target, scope, action
+authority, chosen approach, rationale, consequences, verification, and
+recovery or restore limitation. Inspect read-only first and use an authorized
+isolated target when execution is appropriate. Migrations use the owning Power
+BI or source-data mechanism; SQL is required only for an approved SQL target.
+
 ## Promotion boundary
 
 `examples/` is not a scratch area. A promoted leaf must contain its own

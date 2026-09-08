@@ -41,6 +41,19 @@ node workspace/engine/validate-pbip.mjs .
 pbir validate "Report.Report" --all
 ```
 
+## Data and semantic-model change boundary
+
+Before changing a source query, schema mapping, relationship, model property,
+or security-relevant semantic behavior, follow the
+[shared data-change boundary](../../../docs/contract.md#data-change-boundary).
+For PBIP, the owning migration mechanism is normally Power Query or model
+metadata; do not create a SQL migration or directory unless the approved target
+is actually SQL. Source and default fixture evidence is synthetic or reduced.
+Never include credentials, private tenant or connection details, or production
+extracts outside their exact approved operational scope; retain necessary
+nonsecret model and connection metadata. Local source-edit authority does not
+authorize source-data, RLS, refresh, access, identity, or service mutation.
+
 ## Rename checklist
 
 When renaming tables, columns, measures, pages, or visuals, search across:

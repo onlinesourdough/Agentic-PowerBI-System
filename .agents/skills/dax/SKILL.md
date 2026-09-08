@@ -13,6 +13,13 @@ description: Create, review, and document Power BI DAX measures for KPIs, ratios
 4. Add format string, description, and display folder.
 5. Validate with a DAX query/tool when possible.
 
+For a changed KPI, use the
+[canonical regression recipe](../../../docs/validation.md#representative-data-domain-regressions).
+Its KPI case must cover the relevant filter context and any changed base/derived
+measure boundary. If native DAX execution is unavailable or out of scope,
+record that gap and use the closest safe inspection or deterministic proof;
+do not claim a query ran.
+
 ## Patterns
 
 - Use `DIVIDE()` for ratios.
