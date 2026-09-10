@@ -28,3 +28,8 @@ folder name and the skill's frontmatter `name` must agree.
 
 Validate this shelf directly with
 `python3 workspace/engine/checks.py --skills-only`.
+
+Shared Spec, Build, Review and Ship come from the installed AIOS plugin.
+This shelf contains specialist methods only; a domain review or audit adds
+local criteria without copying the generic lifecycle. Direct tasks use the
+current session; no lead/worker launch is required merely to enter this System.

@@ -3,6 +3,25 @@
 Turn a business question into an owned, validated Power BI model, report, and
 decision journey that can retain its operational proof across runs.
 
+## Shared lifecycle
+
+Use the installed AIOS plugin (0.4.0 or later) for shared procedures:
+`aios-spec-work`, `aios-build-work`, `aios-review-work` and `aios-ship-work`.
+Spec owns conditional technology selection; Review owns generic repository
+health audits. Resolve these skills through the harness, not copied files or
+hardcoded cache paths. This repository owns its requirements, specialist
+methods, checks, release facts and recovery. Keep those facts here and load
+only the phase and local context needed for the change.
+
+Work in the current task by default, including when opened directly from the
+sidebar. Use `aios-orchestrate-workers` only for requested or concretely
+beneficial delegation, or existing-worker recovery. Verify each selected root
+and preserve one writer for overlapping changes. Repository work does not
+preload personal AIOS context. Plugin availability is an authoring capability,
+not a dependency of the product at runtime; if unavailable, report the method
+gap and perform only work adequately covered by the local contract. Do not
+recreate generic skills locally.
+
 ## System contract
 
 This repository is the standalone Agentic Power BI System. It follows the
