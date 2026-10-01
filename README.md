@@ -1,13 +1,8 @@
-![Agentic Power BI System](docs/branding/powerbi-banner.png)
-
-[<img src="docs/branding/powerbi-icon.png" alt="Agentic Power BI System icon" width="48" height="48">](docs/branding/powerbi-icon.png)
-
-![Agentic Power BI System workflow](docs/agentic-power-bi-system-overview.svg)
-
 # Agentic Power BI System
 
-A standalone System for turning a business question into an owned, validated
-Power BI model, report, and decision workflow with durable proof.
+Turn a business question into a Power BI model and report you can check and
+maintain. The system provides skills for defining measures, building the model,
+designing reports and validating the files, with records of each result.
 
 ```text
 business question → definitions and data → model → report → decision → proof
@@ -50,6 +45,8 @@ npm pack --dry-run
   example promotion.
 
 ## Workflow
+
+![Agentic Power BI System workflow](docs/agentic-power-bi-system-overview.svg)
 
 | Need | Route |
 | --- | --- |
